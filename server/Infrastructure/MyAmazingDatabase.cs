@@ -3,7 +3,12 @@ using LinqToDB.Data;
 
 namespace Infrastructure;
 
-public class MyAmazingDatabase(DataOptions<MyAmazingDatabase> options) : DataConnection(options.Options)
+public interface IMyAmazingDatabase
+{
+    ITable<MyAmazingEntities> MyAmazingEntities();
+}
+
+public class MyAmazingDatabase(DataOptions<MyAmazingDatabase> options) : DataConnection(options.Options), IMyAmazingDatabase
 {
     public ITable<MyAmazingEntities> MyAmazingEntities() => this.GetTable<MyAmazingEntities>();
 }

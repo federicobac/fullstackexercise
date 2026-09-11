@@ -2,7 +2,12 @@
 
 namespace Service;
 
-public class MyAmazingService(MyAmazingDatabase db)
+public interface IMyAmazingService
+{
+    List<MyAmazingEntities> GetEntities();
+}
+
+public class MyAmazingService(MyAmazingDatabase db) : IMyAmazingService
 {
     public List<MyAmazingEntities> GetEntities()
     {
