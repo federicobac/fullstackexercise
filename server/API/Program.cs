@@ -11,7 +11,7 @@ var dataOptions = new DataOptions<MyAmazingDatabase>(options);
 builder.Services.AddScoped<MyAmazingDatabase>(_ => new MyAmazingDatabase(dataOptions));
 builder.Services.AddOpenApiDocument();
 
-builder.Services.AddSingleton<IMyAmazingService, MyAmazingService>();
+builder.Services.AddScoped<IMyAmazingService, MyAmazingService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

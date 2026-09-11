@@ -4,10 +4,9 @@ using Service;
 
 namespace API;
 
-public class MyAmazingController : ControllerBase
+[ApiController]
+public class MyAmazingController(IMyAmazingService service) : ControllerBase
 {
-    private readonly IMyAmazingService _myAmazingService;
-    
     [HttpGet(nameof(GetEntities))]
     public List<MyAmazingEntities> GetEntities()
     {
