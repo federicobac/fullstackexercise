@@ -5,5 +5,5 @@ namespace Infrastructure;
 
 public class MyAmazingDatabase(DataOptions<MyAmazingDatabase> options) : DataConnection(options.Options)
 {
-    public ITable<MyAmazingDatabase> MyAmazingDatabases() => this.GetTable<MyAmazingDatabase>();
+    public ITable<MyAmazingEntities> MyAmazingEntities() => this.GetTable<MyAmazingEntities>();
 }
