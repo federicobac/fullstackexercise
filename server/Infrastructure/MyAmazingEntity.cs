@@ -2,8 +2,8 @@
 
 namespace Infrastructure;
 
-public class MyAmazingEntities
+public class MyAmazingEntity
 {
     [PrimaryKey] public string Id { get; set; }
-    public string MyProperty { get; set; }
+    public string EntityName { get; set; }
 }
