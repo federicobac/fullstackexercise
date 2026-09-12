@@ -5,6 +5,7 @@ using Service;
 namespace API;
 
 [ApiController]
+[Route("api/[controller]")]
 public class MyAmazingController : ControllerBase
 {
     private readonly IMyAmazingService _service;
