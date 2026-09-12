@@ -32,7 +32,7 @@ public class MyAmazingService : IMyAmazingService
 
     public MyAmazingEntity CreateEntity(MyAmazingEntity entity)
     {
-        _db.Insert(entity);
+        entity.Id = _db.InsertWithInt32Identity(entity);
         return entity;
     }
 

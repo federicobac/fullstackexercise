@@ -3,22 +3,51 @@ import "./index.css";
 
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
+import {useEffect, useState} from "react";
+import {Api, MyAmazingEntity} from "@/api/Api.ts";
+
+const api = new Api();
 
 export function App() {
-  return (
-    <div className="app">
-      <div className="logo-container">
-        <img src={logo} alt="Bun Logo" className="logo bun-logo" />
-        <img src={reactLogo} alt="React Logo" className="logo react-logo" />
-      </div>
+    const [entities, setEntities] = useState<MyAmazingEntity[]>([]);
 
-      <h1>Bun + React</h1>
-      <p>
-        Edit <code>src/App.tsx</code> and save to test HMR
-      </p>
-      <APITester />
-    </div>
-  );
+    useEffect(() => {
+        api.api.myAmazingGetEntities()
+            .then((data) => {
+                setEntities(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    const createEntity = () => {
+        api.api.myAmazingCreateEntity({
+            entityName: "My first entity"
+        })
+            .then((newEntity) => {
+                setEntities([...entities, newEntity]);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+    
+    return (
+      <div>
+          <h1>My Amazing Entities</h1>
+
+          <button onClick={createEntity}>
+              Create entity
+          </button>
+
+          {entities.map((entity) => (
+              <div key={entity.id}>
+                  {entity.id} - {entity.entityName}
+              </div>
+          ))}
+      </div>
+    );
 }
 
 export default App;

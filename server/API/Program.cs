@@ -14,6 +14,8 @@ builder.Services.AddOpenApiDocument();
 builder.Services.AddScoped<IMyAmazingService, MyAmazingService>();
 builder.Services.AddControllers();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -23,6 +25,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 //app.MapGet("/", (MyAmazingDatabase db) => db.MyAmazingEntities().ToList());
+
+app.UseCors(_ => _.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(_ => true));
 
 app.UseOpenApi();
 app.UseSwaggerUi();
