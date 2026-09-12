@@ -6,9 +6,9 @@ namespace Service;
 public interface IMyAmazingService
 {
     public List<MyAmazingEntity> GetEntities();
-    public void CreateEntity();
-    public void UpdateEntity();
-    public int DeleteEntity();
+    public MyAmazingEntity CreateEntity(MyAmazingEntity entity);
+    public MyAmazingEntity? UpdateEntity(int id, MyAmazingEntity entity);
+    public bool DeleteEntity(int id);
 }
 
 public class MyAmazingService : IMyAmazingService
@@ -20,29 +20,62 @@ public class MyAmazingService : IMyAmazingService
         _db = db;
         Console.WriteLine("Service instantiated");
     }
+
     public List<MyAmazingEntity> GetEntities()
     {
-        return _db.MyAmazingEntities().ToList();
+        // 1. Construct IQueryable
+        var entities = _db.MyAmazingEntities().AsQueryable();
+
+        // 2. Execute query
+        return entities.ToList();
     }
 
-    public void CreateEntity()
+    public MyAmazingEntity CreateEntity(MyAmazingEntity entity)
     {
-        var entity = new MyAmazingEntity()
-        {
-            Id = new Random().Next(),
-            EntityName = "My amazing entity"
-        };
-        
         _db.Insert(entity);
+        return entity;
     }
 
-    public void UpdateEntity()
+    public MyAmazingEntity? UpdateEntity(int id, MyAmazingEntity entity)
     {
-        throw new NotImplementedException();
+        // 1. Construct IQueryable
+        var entities = _db.MyAmazingEntities().AsQueryable();
+
+        // 2. Find the entity
+        var existingEntity = entities
+            .FirstOrDefault(g => g.Id == id);
+
+        if (existingEntity == null)
+        {
+            return null;
+        }
+
+        // 3. Change the entity
+        existingEntity.EntityName = entity.EntityName;
+
+        // 4. Update DB
+        _db.Update(existingEntity);
+
+        return existingEntity;
     }
 
-    public int DeleteEntity()
+    public bool DeleteEntity(int id)
     {
-        throw new NotImplementedException();
+        // 1. Construct IQueryable
+        var entities = _db.MyAmazingEntities().AsQueryable();
+
+        // 2. Find the entity
+        var existingEntity = entities
+            .FirstOrDefault(g => g.Id == id);
+
+        if (existingEntity == null)
+        {
+            return false;
+        }
+
+        // 3. Delete the entity
+        _db.Delete(existingEntity);
+
+        return true;
     }
 }

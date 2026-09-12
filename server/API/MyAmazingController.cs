@@ -8,33 +8,46 @@ namespace API;
 public class MyAmazingController : ControllerBase
 {
     private readonly IMyAmazingService _service;
+
     public MyAmazingController(IMyAmazingService service)
     {
         _service = service;
         Console.WriteLine("Controller has been instantiated");
     }
-    
-    [HttpGet(nameof(GetEntities))]
+
+    [HttpGet]
     public List<MyAmazingEntity> GetEntities()
     {
         return _service.GetEntities();
     }
-    
-    [HttpPost(nameof(CreateEntity))]
-    public void CreateEntity()
+
+    [HttpPost]
+    public MyAmazingEntity CreateEntity(MyAmazingEntity entity)
     {
-        _service.CreateEntity();
+        return _service.CreateEntity(entity);
     }
-    
-    [HttpPut(nameof(UpdateEntity))]
-    public void UpdateEntity()
+
+    [HttpPut("{id}")]
+    public ActionResult<MyAmazingEntity> UpdateEntity(
+        int id,
+        MyAmazingEntity entity)
     {
-        _service.UpdateEntity();
+        var updated = _service.UpdateEntity(id, entity);
+
+        if (updated == null)
+            return NotFound();
+
+        return updated;
     }
-    
-    [HttpDelete(nameof(DeleteEntity))]
-    public int DeleteEntity()
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteEntity(int id)
     {
-        _service.DeleteEntity();
+        var deleted = _service.DeleteEntity(id);
+
+        if (!deleted)
+            return NotFound();
+
+        return NoContent();
     }
 }

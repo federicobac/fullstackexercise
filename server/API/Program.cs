@@ -19,10 +19,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<MyAmazingDatabase>();
-    db.CreateTable<MyAmazingEntities>(tableOptions: TableOptions.CreateIfNotExists);
+    db.CreateTable<MyAmazingEntity>(tableOptions: TableOptions.CreateIfNotExists);
 }
 
-app.MapGet("/", (MyAmazingDatabase db) => db.MyAmazingEntities().ToList());
+//app.MapGet("/", (MyAmazingDatabase db) => db.MyAmazingEntities().ToList());
+
 app.UseOpenApi();
 app.UseSwaggerUi();
 app.MapControllers();

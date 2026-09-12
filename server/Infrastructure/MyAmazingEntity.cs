@@ -4,6 +4,6 @@ namespace Infrastructure;
 
 public class MyAmazingEntity
 {
-    [PrimaryKey] public string Id { get; set; }
+    [PrimaryKey] public int Id { get; set; }
     public string EntityName { get; set; }
 }
