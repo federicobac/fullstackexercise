@@ -23,13 +23,16 @@ export function App() {
 
     const createEntity = () => {
         api.api.myAmazingCreateEntity({
-            entityName: "My first entity"
+            entityName: "My new entity"
         })
             .then((newEntity) => {
-                setEntities([...entities, newEntity]);
+                setEntities((currentEntities) => [
+                    ...currentEntities,
+                    newEntity
+                ]);
             })
             .catch((error) => {
-                console.error(error);
+                alert(error.error?.title);
             });
     };
     
