@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using System.ComponentModel.DataAnnotations;
+using Infrastructure;
 using LinqToDB;
 
 namespace Service;
@@ -32,6 +33,14 @@ public class MyAmazingService : IMyAmazingService
 
     public MyAmazingEntity CreateEntity(MyAmazingEntity entity)
     {
+        //1. Validation rules
+        if (string.IsNullOrEmpty(entity.EntityName))
+        {
+            throw new ValidationException(
+                "Entity name cannot be empty");
+        }
+
+        //2.Execute query
         entity.Id = _db.InsertWithInt32Identity(entity);
         return entity;
     }
@@ -45,10 +54,9 @@ public class MyAmazingService : IMyAmazingService
         var existingEntity = entities
             .FirstOrDefault(g => g.Id == id);
 
-        if (existingEntity == null)
-        {
-            return null;
-        }
+        if (existingEntity == null) 
+            throw new ValidationException(
+                "Entity with that id was not found");
 
         // 3. Change the entity
         existingEntity.EntityName = entity.EntityName;
@@ -69,9 +77,8 @@ public class MyAmazingService : IMyAmazingService
             .FirstOrDefault(g => g.Id == id);
 
         if (existingEntity == null)
-        {
-            return false;
-        }
+            throw new ValidationException(
+                "Entity with that id was not found");
 
         // 3. Delete the entity
         _db.Delete(existingEntity);

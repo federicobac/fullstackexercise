@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using System.ComponentModel.DataAnnotations;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
@@ -33,17 +34,19 @@ public class MyAmazingController : ControllerBase
         int id,
         MyAmazingEntity entity)
     {
+        if (id <= 0)
+            throw new ValidationException("ID must be greater than 0");
+        
         var updated = _service.UpdateEntity(id, entity);
-
-        if (updated == null)
-            return NotFound();
-
         return updated;
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteEntity(int id)
     {
+        if (id <= 0)
+            throw new ValidationException("ID must be greater than 0");
+        
         var deleted = _service.DeleteEntity(id);
 
         if (!deleted)

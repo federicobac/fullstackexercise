@@ -10,8 +10,11 @@ public class GlobalExceptionHandler : IExceptionHandler
         HttpContext httpContext, 
         Exception exception, 
         CancellationToken cancellationToken)
-    { 
-        httpContext.Response.StatusCode = 500;
+    {
+        if (exception is ValidationException)
+        {
+            httpContext.Response.StatusCode = 401;
+        }
 
         await httpContext.Response.WriteAsJsonAsync(
             new ProblemDetails()
