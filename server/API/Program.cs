@@ -1,3 +1,4 @@
+using API;
 using Infrastructure;
 using LinqToDB;
 using Service;
@@ -14,9 +15,14 @@ builder.Services.AddOpenApiDocument();
 builder.Services.AddScoped<IMyAmazingService, MyAmazingService>();
 builder.Services.AddControllers();
 
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {
