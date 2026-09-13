@@ -33,6 +33,22 @@ export function App() {
             });
     };
     
+    const updateEntity = (id: number) => {
+        api.api.myAmazingUpdateEntity(
+            { id: id },
+            { entityName: "Updated entity" }
+        )
+            .then((updatedEntity) => {
+                setEntities((currentEntities) =>
+                currentEntities.map((entity) => 
+                entity.id === id ? updatedEntity : entity)
+            );
+            })
+        .catch((error) => {
+            console.error(error);
+        });
+    };
+    
     return (
       <div>
           <h1>My Amazing Entities</h1>
@@ -44,6 +60,10 @@ export function App() {
           {entities.map((entity) => (
               <div key={entity.id}>
                   {entity.id} - {entity.entityName}
+                  
+                  <button onClick={() => updateEntity(entity.id!)}>
+                      Update entity
+                  </button>
               </div>
           ))}
       </div>
