@@ -48,6 +48,18 @@ export function App() {
             console.error(error);
         });
     };
+
+    const deleteEntity = (id: number) => {
+        api.api.myAmazingDeleteEntity({ id: id })
+            .then(() => {
+                setEntities((currentEntities) =>
+                    currentEntities.filter((entity) => entity.id !== id)
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
     
     return (
       <div>
@@ -63,6 +75,10 @@ export function App() {
                   
                   <button onClick={() => updateEntity(entity.id!)}>
                       Update entity
+                  </button>
+
+                  <button onClick={() => deleteEntity(entity.id!)}>
+                      Delete entity
                   </button>
               </div>
           ))}
